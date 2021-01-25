@@ -5,7 +5,9 @@
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "microphone": "*"
+        "microphone": "*",
+        "neopixel": "github:microsoft/pxt-neopixel#v0.7.3",
+        "microbitplayground": "github:jasonyaocoder/microbitplayground#master"
     },
     "files": [
         "README.md",

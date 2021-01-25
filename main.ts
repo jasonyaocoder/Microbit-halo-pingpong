@@ -16,17 +16,23 @@ function goClockPixel () {
     if (1 == ClockpixelChanged) {
         ClockpixelChanged = 0
     } else if (ClockPixel == SinglePixel) {
-        ClockPixel += 1
-        ClockPixel = ClockPixel % 24
+        ClockPixel += Direction2
+        ClockPixel = ledCappedIndex(ClockPixel)
         ClockpixelChanged = 1
         Color = randomColor()
         if (ClockPixel % 2 == 0) {
             randomImage()
+            music.playTone(262, music.beat(BeatFraction.Sixteenth))
+        } else {
+            music.playTone(330, music.beat(BeatFraction.Sixteenth))
         }
     } else {
     	
     }
 }
+input.onButtonPressed(Button.A, function () {
+    Direction2 = Direction2 * -1
+})
 function ledCappedIndex (Index: number) {
     return (Index + 24) % 24
 }
@@ -37,6 +43,7 @@ function random255 () {
     return randint(0, 255)
 }
 let ImageIndex = 0
+let Direction2 = 0
 let Color = 0
 let ClockpixelChanged = 0
 let ClockPixel = 0
@@ -46,9 +53,10 @@ SinglePixel = 0
 ClockPixel = 0
 ClockpixelChanged = 0
 Color = randomColor()
+Direction2 = 1
 basic.forever(function () {
-    SinglePixel += 1
-    SinglePixel = SinglePixel % 24
+    SinglePixel += Direction2
+    SinglePixel = ledCappedIndex(SinglePixel)
     goClockPixel()
     Pixel.setPixelColor(SinglePixel, neopixel.colors(NeoPixelColors.Red))
     Pixel.setPixelColor(ClockPixel, Color)

@@ -1,24 +1,14 @@
-function moveAmount () {
-    return Speed * Direction2
+function showImage () {
+    ImageIndex = ClockPixel % Images.length
+    Images[ImageIndex].showImage(0)
 }
-function randomImage () {
-    ImageIndex = randint(0, 5)
-    if (ImageIndex == 0) {
-        basic.showIcon(IconNames.Tortoise)
-    } else if (ImageIndex == 1) {
-        basic.showIcon(IconNames.Butterfly)
-    } else if (ImageIndex == 2) {
-        basic.showIcon(IconNames.Giraffe)
-    } else if (ImageIndex == 3) {
-        basic.showIcon(IconNames.Duck)
-    } else {
-        basic.showIcon(IconNames.Heart)
-    }
+function moveAmount () {
+    return Direction2
 }
 function goClockPixel () {
     if (1 == ClockpixelChanged) {
         ClockpixelChanged = 0
-    } else if (absDisance(SinglePixel, ClockPixel) < Speed) {
+    } else if (absDisance(SinglePixel, ClockPixel) < 1) {
         ClockPixel += moveAmount()
         ClockPixel = ledCappedIndex(ClockPixel)
         ClockpixelChanged = 1
@@ -28,9 +18,13 @@ function goClockPixel () {
         } else {
             music.playTone(330, music.beat(BeatFraction.Sixteenth))
         }
+        showImage()
     } else {
     	
     }
+}
+function createImages () {
+    Images = [images.iconImage(IconNames.Heart), images.iconImage(IconNames.SmallHeart), images.iconImage(IconNames.Yes), images.iconImage(IconNames.No), images.iconImage(IconNames.Happy), images.iconImage(IconNames.Sad), images.iconImage(IconNames.Confused), images.iconImage(IconNames.Angry), images.iconImage(IconNames.Asleep), images.iconImage(IconNames.Surprised), images.iconImage(IconNames.Silly), images.iconImage(IconNames.Fabulous), images.iconImage(IconNames.Silly), images.iconImage(IconNames.Meh), images.iconImage(IconNames.TShirt), images.iconImage(IconNames.Rollerskate), images.iconImage(IconNames.Duck), images.iconImage(IconNames.House), images.iconImage(IconNames.Tortoise), images.iconImage(IconNames.Butterfly), images.iconImage(IconNames.StickFigure)]
 }
 input.onButtonPressed(Button.A, function () {
     Direction2 = Direction2 * -1
@@ -43,7 +37,7 @@ function randomColor () {
 }
 input.onButtonPressed(Button.B, function () {
     Speed += 1
-    Speed = Speed % 3 + 1
+    Speed = Speed % 3 + 0
 })
 function absDisance (num: number, num2: number) {
     return Math.abs(100 + num - (100 + num2))
@@ -51,6 +45,7 @@ function absDisance (num: number, num2: number) {
 function random255 () {
     return randint(0, 255)
 }
+let Images: Image[] = []
 let ImageIndex = 0
 let Speed = 0
 let Direction2 = 0
@@ -65,6 +60,7 @@ ClockpixelChanged = 0
 Color = randomColor()
 Direction2 = 1
 Speed = 1
+createImages()
 basic.forever(function () {
     SinglePixel += moveAmount()
     SinglePixel = ledCappedIndex(SinglePixel)
@@ -75,4 +71,5 @@ basic.forever(function () {
     Pixel.setPixelColor(ledCappedIndex(ClockPixel + -1), Color)
     Pixel.show()
     Pixel.clear()
+    basic.pause(100 * Speed)
 })
